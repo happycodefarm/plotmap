@@ -16,8 +16,6 @@ if (isset($_SESSION["timeout"])) {
 	if ($sessionTTL > $inactive) {
 		session_unset();
 		session_regenerate_id();
-		
-		//header("Location: /logout.php");
 	}
 }
 $actions = ["tiemout"=>"pmTimeOut"];
@@ -30,7 +28,6 @@ if (plotGetRequest('timeout')!=null) {
 
 
 $_SESSION["timeout"] = time();
-//error_log($ip."@".$str_json."\n",3,"plotlog.log");
 
 // handle logout
 if (plotGetRequest('logout')!=null) {
@@ -66,9 +63,7 @@ if (plotGetRequest('settings')!=null) {
 	$settings['siteSubtitle'] = 		$result['siteSubtitle']; 
 	$settings['backgroundColor'] = 		$result['backgroundColor'];
 	$settings['titleColor'] = 		$result['titleColor'];
-		
-	//$GLOBALS['plot_db']->close();
-	
+
 	addAnswer(["settings"=>$settings]);
 }
 
@@ -102,22 +97,19 @@ if  (plotGetRequest('fetch')!=null) {
 	$object = json_decode(file_get_contents('php://input'));
 	$map = $object->{'map'}; //  get map value	
 	$markers = getMapMarkers($map);
-	//error_log("FETCH:\n".json_encode($markers)."\n",3,"plotlog.log");
-	
+
 	addAnswer(["markers"=>$markers]);
 }
 
 if  (plotGetRequest('maps')!=null) {
 
 	$maps = getMaps();
-	//error_log("MAPS:\n".json_encode($maps));
 	addAnswer(["maps"=>$maps]);
 }
 
 if  (plotGetRequest('overlays')!=null) {
 
 	$overlays = getOverlays();
-	//error_log("OVERLAYS:\n".json_encode($overlays));
 	addAnswer(["overlays"=>$overlays]);
 }
 
@@ -132,7 +124,6 @@ if (plotGetRequest('attributes')!=null) {
 }
 
 if (plotGetRequest('groups')!=null) {
-	//echo getMarkersGroups();
 	$markerGroups = getMarkersGroups();
 	addAnswer(["groups"=>$markerGroups]);
 }
@@ -160,10 +151,8 @@ if (pmCheckLogin() && plotGetRequest('update')!=null) {
 	$request = "UPDATE markers SET title='$title',map='$map',preview='$preview',type='$type',content='$content',attributes='$attributes',lat=$lat,lng=$lng,locked=$locked WHERE id LIKE $id";
 
 	if ($GLOBALS['plot_db']->exec($request)) {
-		error_log("new user: ".$login."pass:".$password."\n",3,"plotlog.log");
 		addAnswer(["update"=>1]);
 	} else {
-		error_log("bad user: ".$login."pass:".$password."\n",3,"plotlog.log");
 		addAnswer(["update"=>0]);
 	}
 	
@@ -175,17 +164,13 @@ if (pmCheckLogin() &&  plotGetRequest('remove')!=null) {
 	$object = json_decode(file_get_contents('php://input'));
 	
 	$id = $object->{'id'};
-
-	//$db = db_connect();
 	
 	$request = "DELETE FROM markers WHERE id LIKE $id";
 	$results = $GLOBALS['plot_db']->exec($request);
 	
 	error_log($request."\n",3,"plotlog.log");
 	error_log($results."\n",3,"plotlog.log");
-	
-	//$GLOBALS['plot_db']->close();
-	
+		
 	if ($GLOBALS['plot_db']->exec($request)) {
 		addAnswer(["remove"=>1]);
 	} else {
@@ -199,7 +184,6 @@ if (plotGetRequest('geojson')!=null) {
 
 	$request = "SELECT lng, lat FROM points";
 
-	//echo $request;
 	$results = $adb->query($request);
 	
 	if ($results == true) {
@@ -327,7 +311,6 @@ function getOverlays() {
 }
 
 function getMarkerContent($markerID) {
-	//$GLOBALS['plot_db'] = db_connect();
 
 	$request = "SELECT content FROM markers WHERE id LIKE $markerID";
 	$content = $GLOBALS['plot_db']->querySingle($request);
@@ -336,7 +319,6 @@ function getMarkerContent($markerID) {
 }
 
 function getMarkersAttributes() {
-	//$db = db_connect();
 
 	$request = "SELECT attributes FROM markers WHERE attributes NOT NULL";
 	$results = $GLOBALS['plot_db']->query($request);
@@ -350,12 +332,10 @@ function getMarkersAttributes() {
     $allAttributesArray = array_map('trim', $allAttributesArray);
     $allAttributesArray = array_filter($allAttributesArray);
     
-    //addAnswer(["attributes"=>array_unique($allAttributesArray)]);
 	return array_unique($allAttributesArray);
 }
 
 function getMarkersGroups() {
-	//$db = db_connect();
 
 	$request = "SELECT attributes FROM markers WHERE attributes NOT NULL";
 	$results = $GLOBALS['plot_db']->query($request);
@@ -368,18 +348,14 @@ function getMarkersGroups() {
     
     $allAttributesArray = array_map('trim', $allAttributesArray);
     $allAttributesArray = array_filter($allAttributesArray);
-    
-   // addAnswer(["groups"=>array_unique($allAttributesArray)]);
-    
+        
 	return array_unique($allAttributesArray);
 }
 
 function getMapMarkers($map) {
 
 	$request = "SELECT * FROM markers WHERE map LIKE '$map'";
-	
-	//error_log($request."\n",3,"plotlog.log");
-	
+		
 	$results = $GLOBALS['plot_db']->query($request);
 	
 	$markers = array(); 
@@ -409,13 +385,6 @@ function getMapMarkers($map) {
 }
 
 function createMapMarker() {
-
-	// if (!pmCheckLogin()) {
-// 		error_log("create marker failed: no credential\n");
-// 		return;
-// 	} else {
-// 		error_log("create marker ok: credential ok\n");
-// 	}
 	
 	$object = json_decode(file_get_contents('php://input'));
 	
@@ -432,8 +401,7 @@ function createMapMarker() {
 	$request = "INSERT INTO markers (map,lng,lat,type,title,content,preview,attributes,locked,icon) VALUES ('$map',$lng,$lat,'$type','$title','$content','$preview','$attributes',$locked,'$icon')";
 	
 	if ($GLOBALS['plot_db']->exec($request)) {
-		//("ok create");
-		
+
 		$request = "SELECT last_insert_rowid()";
 		$id = $GLOBALS['plot_db']->querySingle($request);
 		
@@ -441,7 +409,6 @@ function createMapMarker() {
 		
 	} else {
 		addAnswer(["error"=>"marker create: ".$GLOBALS['plot_db']->lastErrorMsg()]);
-		//error_log("create failed: request failled: ".$GLOBALS['plot_db']->lastErrorMsg()."\n");	
 	}
 }
 
@@ -489,20 +456,6 @@ function plotGetRequest($request){
 }
 	
 function plotMapGetImageThumbnail($path) {
-	// $image = exif_thumbnail("files/".$path, $width, $height, $type);
-// 	if ($image!==false) {
-//     	header('Content-type: ' .image_type_to_mime_type($type));
-//     	echo $image;
-//     	exit;
-// 	} else {
-//     	// no thumbnail available, handle the error here
-//     	echo 'No thumbnail available';
-// 	}
-	// $imagick = new Imagick(realpath("files/".$path));
-//     $imagick->setbackgroundcolor('rgb(64, 64, 64)');
-//     $imagick->thumbnailImage(100, 100, true, true);
-//     header("Content-Type: image/jpg");
-//     echo $imagick->getImageBlob();
 
 	$org_info = getimagesize("files/".$path);
 	$rsr_org = imagecreatefromjpeg("files/".$path);
@@ -510,8 +463,6 @@ function plotMapGetImageThumbnail($path) {
 	header('Content-Type: image/png');
 	imagepng($rsr_scl);
 
-	//header('Content-Type: image/jpeg');
-	//imagejpeg($rsr_scl);
 	imagedestroy($rsr_org);
 	imagedestroy($rsr_scl);
 }
@@ -520,8 +471,7 @@ function plotMapGetImageThumbnail($path) {
 
 function addAnswer($array, $validate=false) {
 	$GLOBALS['answer'] = array_merge($GLOBALS['answer'],$array);
-	//print_r($GLOBALS['answer']);
-	//echo("----------<br />");
+
 	if ($validate==true) validateAnswer();
 }
 
@@ -544,11 +494,9 @@ function db_connect() {
     }
     
     $adb = new DB('plotmap.db');
-    //error_log("connect\n-----\n".$db->lastErrorMsg()."\n----------\n",3,"plotlog.log");
-	
+
     if ($adb->lastErrorMsg() != 'not an error') {
     	error_log("Database Error: " . $adb->lastErrorMsg()."\n",3,"plotlog.log");
-        //print "Database Error: " . $db->lastErrorMsg() . "<br />"; //Does not get triggered
     }
    
     return $adb;
