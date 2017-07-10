@@ -1,0 +1,12 @@
+.leaflet-control-geolocation a
+{
+	background: #fff url(geoloc.png) no-repeat 0 0;
+	background-size: 26px 26px;
+	opacity: .5;
+}
+
+@media (-webkit-min-device-pixel-ratio:2),
+  (min-resolution:192dpi)
+{
+	.leaflet-control-geolocation a { background-image: url(geoloc@2x.png); }
+}

@@ -1,0 +1,368 @@
+/*elements*/
+html,body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: black;
+	color: #000;
+	font-family: "Helvetica Neue",Helvetica,Optima,sans-serif;
+	font-weight: 300;
+}
+
+a#plotmap-show-settings {
+	background-color: transparent;
+	color: inherit;
+	text-decoration: none;
+	float:right;
+	pointer-events: auto;
+}
+
+span#plotmap-subtitle {
+	margin: 5px;
+	margin-left: 55px;
+}
+
+ 
+img {
+    height: auto; 
+    width: auto;
+    display: block;
+ 	margin-left: auto;
+  	margin-right: auto;
+ 
+/* 
+    max-width: 100%; 
+    max-height: 100%; 
+ */
+}
+
+
+h1#plotmap-title
+{
+	position: relative;
+	width: 90%;
+	margin: 8px 5px 5px 55px;
+	padding: 0px;
+	overflow: hidden;
+	font-weight: 400;
+	font-size: 12pt;
+	vertical-align: baseline;
+
+	background-color: rgba(255, 255, 255, .5);
+	
+}
+
+div#plotmap-map {
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0px;
+	right:0px;
+	
+	overflow: hidden;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: #FFF;
+	box-sizing: border-box;
+}
+
+/*wrappers*/
+div#plotmap-header {
+	position:fixed;
+	width: auto;
+	height: 100px;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	color: black;
+	background-color: transparent;
+	z-index: 9002;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+}
+
+div#plotmap-upload-progress-wrapper{
+	position: absolute;
+	width: 100%;
+	height: auto;
+	top: 10%;
+	left: 0;
+	z-index: 9003;
+	overflow: auto;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	background-color: rgba(0,0,0,0.0);
+	color: #ccc;
+	padding-right:100px;
+	box-sizing: border-box;
+}
+
+div#plotmap-settings-wrapper {
+	position: absolute;
+	width: 40%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 9006;
+	overflow: auto;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	background-color: rgba(0,0,0,0.8);
+	color: #ccc;
+	
+	padding:10px;
+	box-sizing: border-box;
+}
+
+div#plotmap-content-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #ccc;
+	z-index: 9004;
+}
+
+div#plotmap-edit-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #ccc;
+	z-index: 9005;
+}
+
+
+div#plotmap-settings{
+	margin:40px;
+}
+
+div#plotmap-logged {
+
+}
+
+div#plotmap-content {
+	position: fixed;
+	top: 5%;
+	left: 2.5%;
+	bottom: 5%;
+	right: 2.5%;
+	padding: 10px;
+	color: black;
+	background-color: white;
+	overflow: auto;
+}
+
+form#plotmap-file-uploader-form { 
+	position: absolute; 
+}
+
+hr {
+	display: block;
+	border:none;
+	border-top:1px solid #BFBFBF;
+}
+
+fieldset {
+	width: 100%;
+	border:1px solid #BFBFBF;
+	margin-bottom: 1em;
+	min-height: 200px;
+	box-sizing: border-box;
+}
+video {
+	background: black;
+}
+
+div#plotmap-marker-edit {
+	position: fixed;
+	top: 5%;
+	left: 2.5%;
+	bottom: 5%;
+	right: 2.5%;
+	padding: 10px;
+	color: black;
+	background-color: white;
+	overflow: scroll;
+}
+
+#plotmap-marker-input-icon-td {
+	width:40px;
+}
+
+textarea#plotmap-marker-input-content {
+	resize: none;
+	width: 100%;
+	min-height: 20em;
+	border-color: #ccc;
+	margin: 0;
+	margin-bottom: 20px;
+}
+
+textarea#plotmap-marker-input-preview {
+	resize: none;
+	width: 100%;
+	height: 3em;
+	border-color: #ccc;
+	margin: 0;
+	margin-bottom: 20px;
+}
+
+label {
+	vertical-align: top;
+	display: block;
+}
+
+/*classes*/
+
+.leaflet-fullscreen-on {
+  z-index: 9000 !important;
+}
+
+.plotmap-image-container {
+    width: 100%;
+    height: 100%;
+	background: black;
+}
+
+.plotmap-image-resize-fit-center {
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+
+/*show/hide classes*/
+.pm-display-credential {
+	display: none;
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+}
+
+.pm-display-settings {
+	display: none;
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+}
+
+.pm-display-edit {
+	display: none;
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+}
+
+.pm-display-show {
+	display: none;
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+}
+
+.pm-display-upload {
+	display:none;
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+}
+
+.plotmap-uploader-progress {
+	height:20px;
+	width:0%;
+	background:green;
+}
+
+.plotmap-content-control {
+	position: fixed;
+	top: 2%;
+	right: 2.5%;
+	font-weight: 800;
+}
+
+.plotmap-content-control-element {
+	padding-left: 1em;
+	color:white;
+	font-size: 14px;
+	font-weight: 300;
+	text-decoration: none;
+}
+
+.plotmap-marker-input {
+	width: 100%;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.plotmap-marker-input-block {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.plotmap-popup-title {
+	font-weight: bold;
+	margin-bottom: .5em;
+}
+
+.uploading {
+	background:yellow;
+	background-image: "progress.png";
+}
+
+.success {
+	background:green;
+	background-image: "progress.png";
+}
+
+.failure {
+	background:red;
+	background-image: "progress.png";
+}
+
+
+.plotmap-popup-preview { margin-bottom: 1em; }
+.plotmap-popup-control { margin-right: 10px; }
+
+.plotmap-div-icon {
+	width: 20px;
+	height: 20px;
+	background-color: transparent;
+	background-image: url(marker-select-icon.png);
+}
+
+.plotmap-control-geoloc a {
+	background: #fff url(geoloc.png) no-repeat 0 0;
+	background-size: 26px 26px;
+	opacity: .5;
+}
+
+.plotmap-control-add-marker a {
+	background: #fff url(marker-add.png) no-repeat 0 0;
+	background-size: 26px 26px;
+}
+
+.plotmap-control-on a { opacity: 1; }
+
+.leaflet-div-icon {
+	background: transparent;
+	border: 0px solid #666;
+}
+
+.plot-file-link a {
+	cursor: auto;
+}
+
+@media (-webkit-min-device-pixel-ratio:2),
+  (min-resolution:192dpi) {
+	.plotmap-control-add-marker a { background-image: url(marker-add@2x.png); }
+	.plotmap-control-geoloc a { background-image: url(geoloc@2x.png); }
+}

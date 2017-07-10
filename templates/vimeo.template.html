@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Untitled</title>
+</head>
+<body>
+<script type='text/javascript'>
+	function plotmapGenerateTemplate() {
+		var iframeElement = document.createElement('iframe');
+		iframeElement.id = 'plotmap-vimeo-iframe';
+		var src =  "http://player.vimeo.com/video/"+document.getElementById("plotmap-vimeo-videoid-input").value;
+		//alert(src);
+		iframeElement.src = src;
+		iframeElement.width = document.getElementById("plotmap-vimeo-width-input").value;
+		iframeElement.height = document.getElementById("plotmap-vimeo-height-input").value;
+		iframeElement.setAttribute("frameborder", "0");
+		
+				
+		var source = iframeElement.outerHTML;
+		document.getElementById('textInput').innerHTML = source;
+		console.log(source);
+		
+		return false;
+	}
+</script>
+<form action="#" id="plotmap-vimeo-template-form" onsubmit="return plotmapGenerateTemplate()" novalidate>
+	<input type="text" name="plotmap-vimeo-videoid-input" id="plotmap-vimeo-videoid-input" value="114741061">
+	<input type="text" name="plotmap-vimeo-widht-input" id="plotmap-vimeo-width-input" value="100%">
+	<input type="text" name="plotmap-vimeo-height-input" id="plotmap-vimeo-height-input" value="100%">
+	<input type="submit" name="plotmap-template-submit" value="set" id="plotmap-template-submit">
+</form>
+<div id="content" style="width:100%; height:500px;">
+<textarea id="textInput">
+</textarea>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>PlotMap</title>
+	<link rel="stylesheet" href="leaflet/leaflet.css" />
+	<link rel='stylesheet' href='leaflet.fullscreen/leaflet.fullscreen.css' />
+	<link rel='stylesheet' href='leaflet.osmgeocoder/Control.OSMGeocoder.css' />
+	<link rel='stylesheet' href='leaflet.attributes/Leaflet.attributes.css' />
+	<link rel='stylesheet' href='leaflet.label/leaflet.label.css' />
+	<link rel='stylesheet' href='leaflet.contextmenu/leaflet.contextmenu.css' />
+	<link rel="stylesheet" href="plotmap.css" />
+	<script src="leaflet/leaflet-src.js"></script>
+	<script src="leaflet.restoreview/leaflet.restoreview.js"></script>
+	<script src="leaflet.fullscreen/Leaflet.fullscreen.js"></script>
+	<script src="leaflet.osmgeocoder/Control.OSMGeocoder.js"></script>
+	<script src="leaflet.attributes/Leaflet.attributes.js"></script>
+	<script src="leaflet.label/leaflet.label.js"></script>
+	<script src="leaflet.draw/Leaflet.draw.js"></script>
+	<script src="leaflet.contextmenu/leaflet.contextmenu.js"></script>
+	<script type='text/javascript'>
+		
+	</script>
+</head>
+<body>
+<div id="plotmap-map">
+<div id="plotmap-logged" class="pm-display-credential">
+		logged
+	</div>
+<div id="plotmap-header">
+	<h1 id="plotmap-title">
+	</h1>
+	<span id="plotmap-subtitle"></span> 
+</div>
+<div id="plotmap-upload-progress-wrapper"></div>
+<div id="plotmap-settings-wrapper" class="pm-display-settings">
+	<label for="plotmap-login-form">Login</label> 
+
+	<form id="plotmap-login-form" onsubmit="return plotmapLogin()" novalidate>
+		<input type="text" placeholder="login" name="login" id="plotmap-input-login" required>
+		<input type="password" placeholder="password" name="password" id="plotmap-input-password">
+		<input type="submit" name="plotmap-login-input-submit" value="login" id="plotmap-login-input-submit">
+		<input type="button" value="logout" onclick="plotmapLogout()">
+		<input type="button" value="close" onclick="showSettings(false)">
+	</form>
+	<br />
+	<div id="plotmap-settings" class="pm-display-credential">
+		<form id="plotmap-settings-form" onsubmit="return plotMapSaveSettings()" novalidate>
+			<fieldset>
+				<legend>Settings</legend> <label for="plotmap-input-site-title">Site Title</label> 
+				<input type="text" placeholder="Site Title" name="sitetitle" id="plotmap-input-site-title" required>
+				<label for="plotmap-input-site-subtitle">Subtitle</label> 
+				<input type="text" placeholder="Subtitle" name="sitesubtitle" id="plotmap-input-site-subtitle" required>
+				<label for="plotmap-input-background-color">Background Color</label> 
+				<input id="plotmap-input-background-color" type="color" defaultvalue="#000000" value="#000000">
+				<label for="plotmap-input-title-color">Title Color</label> 
+				<input id="plotmap-input-title-color" type="color" defaultvalue="#CCCCCC" value="#CCCCCC">
+				<hr />
+				<input type="submit" value="save">
+				<input type="reset" value="cancel">
+				
+			</fieldset>
+		</form>
+		<fieldset>
+			<legend>Maps</legend> 
+			<table id="plotmap-map-list-table">
+				<tr>
+					<th>name</th>
+					<th>url</th>
+				</tr>
+			</table>
+		</fieldset>
+	</div>
+</div>
+<div id="plotmap-content-wrapper" class="pm-display-show">
+	<div id="plotmap-content" onClick = "event.stopPropagation()">
+	</div>
+</div>
+<div id="plotmap-edit-wrapper" class="pm-display-edit">
+	<div id="plotmap-marker-edit">
+		<fieldset>
+			<legend> Marker Content </legend> 
+			<form action="#" id="plotmap-marker-edit-form">
+				<table>
+					<tr>
+						<td> <label for="plotmap-marker-input-title"> Title </label> 
+						<input type="text" name="plotmap-marker-input-title" id="plotmap-marker-input-title" class='plotmap-marker-input'>
+						</td>
+						<td id="plotmap-marker-input-icon-td"> <label for="plotmap-marker-input-icon"> Icon </label> <img src="leaflet/images/marker-icon.png" name="plotmap-marker-icon" id="plotmap-marker-icon" class="plotmap-marker-icon"> </td>
+					</tr>
+				</table>
+				<label for="plotmap-marker-input-preview"> Preview </label> <textarea name="plotmap-marker-input-preview" id="plotmap-marker-input-preview" rows="10" cols="3" placeholder="preview"></textarea>
+				<label for="plotmap-marker-input-attributes"> Attributes </label> 
+				<input type="text" name="plotmap-marker-input-attributes" id="plotmap-marker-input-attributes" class='plotmap-marker-input'>
+				<div class="plotmap-marker-input-block">
+					<label for="plotmap-marker-input-lat"> Latitude </label> 
+					<input type="text" name="plotmap-marker-input-lat" id="plotmap-marker-input-lat" class='plotmap-marker-input'>
+				</div>
+				<div class="plotmap-marker-input-block">
+					<label for="plotmap-marker-input-lng"> Longitude </label> 
+					<input type="text" name="plotmap-marker-input-lng" id="plotmap-marker-input-lng" class='plotmap-marker-input'>
+				</div>
+				<div class="plotmap-marker-input-block">
+					<label for="plotmap-marker-input-locked"> locked </label> 
+					<input type="checkbox" name="plotmap-marker-input-locked" id="plotmap-marker-input-locked" class="plotmap-marker-input">
+				</div>
+				<div class="plotmap-marker-input-block">
+					<label for="plotmap-marker-input-type"> Group </label> 
+					<select id="plotmap-marker-input-type" class='plotmap-marker-input' onchange="">
+						<option value="plot" selected> Plot </option>
+						<option value="image"> Image </option>
+						<option value="audio"> Audio </option>
+						<option value="video"> Video </option>
+						<option value="vimeo"> Vimeo </option>
+						<option value="soundcloud"> Sound Cloud </option>
+					</select>
+				</div>
+				<div class="plotmap-marker-input-block">
+					<label for="plotmap-marker-input-type"> Templates </label> 
+					<input type="button" value="Image" onclick="plotMapAppendTemplate('image')">
+					<input type="button" value="Audio" onclick="plotMapAppendTemplate('audio')">
+					<input type="button" value="Video" onclick="plotMapAppendTemplate('video')">
+					<input type="button" value="Vimeo" onclick="plotMapAppendTemplate('vimeo')">
+					<input type="button" value="Sound Cloud" onclick="plotMapAppendTemplate('soundcloud')">
+				</div>
+				<label for="plotmap-marker-input-content"> Content </label> <textarea id="plotmap-marker-input-content" rows="9" cols="50" placeholder="content"></textarea>
+				<input type="submit" name="plotmap-marker-input-submit" value="save" id="plotmap-marker-input-submit">
+				<input type="reset" name="plotmap-marker-input-cancel" value="cancel" id="plotmap-marker-input-cancel">
+			</form>
+		</fieldset>
+		<fieldset>
+			<legend> Files </legend> 
+			<form id="plotmap-file-uploader-form" method="POST" action="upload.php" enctype="multipart/form-data">
+				<label for="plotmap-file-select"> Upload files </label> 
+				<input type="file" id="plotmap-file-select" name="plotmap-file-select[]" onchange="plotMapFileUploadSelectHandler(event)" multiple>
+				<input type="submit" value="upload">
+			</form>
+		</fieldset>
+	</div>
+</div>
+
+</div>
+
+<script src="plotmap.js">
+</script>
+<script type='text/javascript'>
+	initMap();	
+</script>
+</body>
+</html>
